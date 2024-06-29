@@ -1,9 +1,12 @@
 
-//The code is a dynamic programming solution to the problem of finding the maximum amount of gold that can be collected from a 2D matrix.
-// The matrix is given as input, with each cell containing either a number (representing the amount of gold in that cell) or a special 
-//character 'X' (representing a blocked cell) or '!' (representing a rubber cell that negates the gold in the cell). 
-//The goal is to find the maximum amount of gold that can be collected by starting from the top-left cell and moving to the bottom-right cell,
-// while avoiding blocked cells and taking into account the rubber cells.
+
+//The algorithm uses dynamic programming to build a 2D matrix to store the maximum amount of gold that can be collected at each cell.
+// The algorithm iterates through the matrix, calculating the maximum amount of gold that can be collected at each cell based on the
+// values of the cells above and to the left. The algorithm considers the special cases of rubber cells and blocked cells, adjusting the
+// calculations accordingly. The algorithm also stores the path taken to reach the maximum amount of gold in a separate 2D matrix.
+// After completing the calculations, the algorithm traces back the path taken to reach the maximum amount of gold and prints the path.
+
+//The algorithm has a time complexity of O(n^2) and a space complexity of O(n^2), where n is the size of the input matrix.
 
 #include <iostream>
 #include <vector>
