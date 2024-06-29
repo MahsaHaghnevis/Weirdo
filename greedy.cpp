@@ -1,7 +1,15 @@
+
 //The GreedyPath function navigates through a 2D grid (mapMatrics)
 // to collect the maximum possible gold while avoiding obstacles.
-// It uses a greedy algorithm to decide the next move based on the 
-//highest gold value available in the adjacent cells (right and down).
+// It uses a greedy algorithm to decide the next move based on the
+// highest gold value available in the adjacent cells (right and down).
+// The function returns the total gold collected by the end of the path.
+
+
+// The time complexity of the GreedyPath function is O(n^2)
+// This is because the function iterates through each cell in the grid once to calculate the total gold collected.
+// The space complexity of the function is O(1), 
+
 
 #include <iostream>
 #include <vector>
@@ -26,6 +34,8 @@ bool isNumber(const string& str) {
     }
     return true;
 }
+
+
 
 int GreedyPath(vector<vector<string> >& mapMatrix, int size) {
     int i = 0, j = 0;
