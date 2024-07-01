@@ -47,7 +47,7 @@ int GreedyPath(vector<vector<string> >& mapMatrix, int size) {
         return 0;
     }
 
-    while (i < size - 1 || j < size - 1) { // while it didn't hit the wall
+    while (i < size || j < size) { // while it didn't hit the wall
         if (isNumber(mapMatrix[i][j])) {
             if (PreviousHadRubber) {
                 GoldBag -= stoi(mapMatrix[i][j]);
@@ -58,9 +58,9 @@ int GreedyPath(vector<vector<string> >& mapMatrix, int size) {
         } else if (mapMatrix[i][j] == "!") {
             if (PreviousHadRubber) {
                 // If we encounter two consecutive rubber cells, don't subtract anything
-                PreviousHadRubber = true;
+                PreviousHadRubber = false;
             } else {
-                PreviousHadRubber = true; // Mark that we've encountered a rubber cell
+                PreviousHadRubber = true ; // Mark that we've encountered a rubber cell
             }
         }
 
@@ -100,7 +100,12 @@ int GreedyPath(vector<vector<string> >& mapMatrix, int size) {
 
         // if no valid moves, break the loop
         if (Candidates.empty()) {
-            break;
+            if (i == size - 1 && j == size - 1) {
+                break;
+            } else {
+                cout << "Moving impossible" << endl;
+                break;
+            }
         }
 
         // sort candidates based on the max gold value
@@ -109,21 +114,16 @@ int GreedyPath(vector<vector<string> >& mapMatrix, int size) {
         // choose the best option with the most gold value and move to it
         i = Candidates[0].x;
         j = Candidates[0].y;
-
+        Candidates.clear();
         // if moving to a rubber cell, mark it and subtract the gold of the previous house if not a rubber
-        if (mapMatrix[i][j] == "!" && !PreviousHadRubber) {
-            if (isNumber(mapMatrix[i][j])) {
-                GoldBag -= stoi(mapMatrix[i][j]);
-            }
-            PreviousHadRubber = true;
-        } else {
-            PreviousHadRubber = false;
-        }
-    }
-
-    // add the value of the last house
-    if (isNumber(mapMatrix[i][j])) {
-        GoldBag += stoi(mapMatrix[i][j]);
+        // if (mapMatrix[i][j] == "!" && !PreviousHadRubber) {
+        //     if (isNumber(mapMatrix[i][j])) {
+        //         GoldBag -= stoi(mapMatrix[i][j]);
+        //     }
+        //     PreviousHadRubber = true;
+        // } else {
+        //     PreviousHadRubber = false;
+        // }
     }
 
     return GoldBag;
@@ -149,11 +149,19 @@ int main(){
         matrix.push_back(row);
     }
     */
+    // vector<vector<string> > matrix = {
+    //     {"2", "X", "!", "5", "0"},
+    //     {"1", "9", "!", "X", "3"},
+    //     {"1", "3", "1", "6", "2"},
+    //     {"2", "X", "5", "3", "X"},
+    //     {"8", "4", "2", "!", "1"}
+    // };
+    // second test case
     vector<vector<string> > matrix = {
         {"2", "X", "!", "5", "0"},
         {"1", "9", "!", "X", "3"},
         {"1", "3", "1", "6", "2"},
-        {"2", "X", "5", "3", "X"},
+        {"2", "X", "5", "!", "X"},
         {"8", "4", "2", "!", "1"}
     };
 
