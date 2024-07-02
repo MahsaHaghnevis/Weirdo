@@ -37,7 +37,7 @@ bool isNumber(const string &str)
 }
 
 
-void GreedyPath(vector<vector<string>> &mapMatrix, int size)
+void GreedyPath(vector<vector<string> > &mapMatrix, int size)
 {
     int i = 0, j = 0; // to store the current position
     int GoldBag = 0; // to store the gold value
@@ -141,12 +141,11 @@ void GreedyPath(vector<vector<string>> &mapMatrix, int size)
 
 int main()
 {
-    vector<vector<string> > matrix ;
     /*
     int size;
     cout<<"Enter the size of the matrix: "<<endl;
     cin>>size;
-
+    vector<vector<string> > matrix ;
     for(size_t i=0 ; i<size ; i++){
         vector<string> row;
         for(size_t j=0 ; j<size ; j++){
@@ -202,6 +201,15 @@ int main()
     //     {"1", "!", "!", "6", "2"},
     //     {"2", "X", "!", "5", "X"},
     //     {"8", "4", "2", "!", "!"}};
+
+    // sixth test case, all cells are rubbers
+    vector<vector<string> > matrix = {
+        {"!", "X", "!", "!", "!"},
+        {"!", "!", "!", "X", "!"},
+        {"!", "!", "!", "!", "!"},
+        {"!", "X", "!", "!", "X"},
+        {"!", "!", "!", "!", "!"}};
+
 
     GreedyPath(matrix, 5);
 

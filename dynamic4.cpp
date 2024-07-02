@@ -1,11 +1,7 @@
-
-
 //The algorithm uses dynamic programming to build a 2D matrix to store the maximum amount of gold that can be collected at each cell.
-// The algorithm iterates through the matrix, calculating the maximum amount of gold that can be collected at each cell based on the
-// values of the cells above and to the left. The algorithm considers the special cases of rubber cells and blocked cells, adjusting the
-// calculations accordingly. The algorithm also stores the path taken to reach the maximum amount of gold in a separate 2D matrix.
+// The algorithm iterates through the matrix, calculating the maximum amount of gold that can be collected at each cell based on the values of the cells above and to the left. The algorithm considers the special cases of rubber cells and blocked cells adjusting the calculations accordingly.
+// The algorithm also stores the path taken to reach the maximum amount of gold in a separate 2D matrix.
 // After completing the calculations, the algorithm traces back the path taken to reach the maximum amount of gold and prints the path.
-
 //The algorithm has a time complexity of O(n^2) and a space complexity of O(n^2), where n is the size of the input matrix.
 
 #include <iostream>
@@ -29,8 +25,8 @@ int max(const int a, const int b) {
     return (a > b) ? a : b;
 }
 
-//the recursive relation for completing dp matrics:
-//           dp[i][j]=max(value from above , value from left)
+// The recursive relation for completing dp matrics:
+//         dp[i][j]=max(value from above , value from left)
 //         value from above=dp[i−1][j]+(gold value at cell (i,j))
 //         value from left=dp[i][j−1]+(gold value at cell (i,j))
 
@@ -48,7 +44,6 @@ int dynamicProgrammingPath(vector<vector<string> >& matrix) {
 
    //iterating in matrics to fill houses
 
-    //checking the house above
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             if (matrix[i][j] == "X") continue;
@@ -58,11 +53,11 @@ int dynamicProgrammingPath(vector<vector<string> >& matrix) {
                 int value = (matrix[i][j] != "!" && isNumber(matrix[i][j])) ? stoi(matrix[i][j]) : 0;
                 int newValue;
                 
-                if (matrix[i][j] == "!" && isNumber(matrix[i-1][j])) {
-                    newValue = dp[i-1][j] - stoi(matrix[i-1][j]);   //if there was a rubber decrease the  value
-                } else if (matrix[i-1][j] == "!" && isNumber(matrix[i][j])) {
+                if (matrix[i-1][j] == "!" && isNumber(matrix[i][j])) {
                     newValue = dp[i-1][j] - value;   //if there is a rubber decrese the value
-                } else {
+                } else if (matrix[i][j] == "!" )
+                    newValue = dp[i-1][j];
+                else {
                     newValue = dp[i-1][j] + value; //else kepp the value
                 }
 
@@ -77,10 +72,10 @@ int dynamicProgrammingPath(vector<vector<string> >& matrix) {
                 int value = (matrix[i][j] != "!" && isNumber(matrix[i][j])) ? stoi(matrix[i][j]) : 0;  //initializing the value
                 int newValue;
 
-                if (matrix[i][j] == "!" && isNumber(matrix[i][j-1])) {  //if there was a rubber decrease the  value
-                    newValue = dp[i][j-1] - stoi(matrix[i][j-1]); 
-                } else if (matrix[i][j-1] == "!" && isNumber(matrix[i][j])) { //if there is a rubber decrese the value
+                if (matrix[i][j-1] == "!" && isNumber(matrix[i][j])) { //if there is a rubber decrese the value
                     newValue = dp[i][j-1] - value; 
+                } else if (matrix[i][j] == "!"){
+                    newValue = dp[i][j-1];
                 } else {
                     newValue = dp[i][j-1] + value; //else kepp the value
                 }
@@ -140,13 +135,55 @@ int main() {
     }
     */  
 
+    // vector<vector<string> > matrix = {
+    //     {"2", "X", "!", "5" , "0"},
+    //     {"1", "9", "!", "X" , "3"},
+    //     {"1", "3", "1", "6" , "2"},
+    //     {"2", "X", "5", "3" , "X"},
+    //     {"8", "4", "2", "!" , "1"}
+    // };
+
+    // second test case
     vector<vector<string> > matrix = {
-        {"2", "X", "!", "5" , "0"},
-        {"1", "9", "!", "X" , "3"},
-        {"1", "3", "1", "6" , "2"},
-        {"2", "X", "5", "3" , "X"},
-        {"8", "4", "2", "!" , "1"}
+        {"2", "X", "!", "5", "0"},
+        {"1", "9", "!", "X", "3"},
+        {"1", "3", "1", "6", "2"},
+        {"2", "X", "5", "!", "X"},
+        {"8", "4", "2", "!", "1"}
     };
+
+    // third test case
+    // vector<vector<string> > matrix = {
+    //     {"2", "X", "!", "5", "0"},
+    //     {"1", "9", "!", "X", "3"},
+    //     {"1", "3", "!", "6", "2"},
+    //     {"2", "X", "!", "!", "X"},
+    //     {"8", "4", "2", "!", "1"}
+    // };
+
+    // fourth test case
+    // vector<vector<string> > matrix = {
+    //     {"2", "X", "!", "5", "0"},
+    //     {"1", "9", "!", "X", "3"},
+    //     {"1", "3", "!", "6", "2"},
+    //     {"2", "X", "!", "!", "X"},
+    //     {"8", "4", "2", "!", "!"}};
+
+    // fifth test case
+    // vector<vector<string> > matrix = {
+    //     {"2", "X", "!", "5", "0"},
+    //     {"1", "9", "!", "X", "3"},
+    //     {"1", "!", "!", "6", "2"},
+    //     {"2", "X", "!", "5", "X"},
+    //     {"8", "4", "2", "!", "!"}};
+
+    // sixth test case, all cells are rubbers
+    // vector<vector<string> > matrix = {
+    //     {"!", "X", "!", "!", "!"},
+    //     {"!", "!", "!", "X", "!"},
+    //     {"!", "!", "!", "!", "!"},
+    //     {"!", "X", "!", "!", "X"},
+    //     {"!", "!", "!", "!", "!"}};
 
     cout << "Gold collected by dynamic programming path: " << dynamicProgrammingPath(matrix) << endl;
     return 0;
