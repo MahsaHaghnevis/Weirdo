@@ -33,12 +33,17 @@ int dynamicProgrammingPath(vector<vector<string>>& matrix) {
 
             if (i > 0 && matrix[i-1][j] != "X") {
                 int value = (isNumber(matrix[i][j])) ? stoi(matrix[i][j]) : 0;
-                int newValue;
+                int newValue = dp[i-1][j];
 
-                if (matrix[i-1][j] == "!" && matrix[i][j] == "!") {
-                    newValue = dp[i-1][j]; // two successive rubber cells, don't decrease gold
-                } else if (matrix[i-1][j] == "!") {
-                    newValue = dp[i-1][j] - value; // previous cell was a rubber cell
+                if (matrix[i-1][j] == "!") {
+                    if (matrix[i][j] == "!") {
+                        newValue = dp[i-1][j]; // two successive rubber cells, don't decrease gold
+                    } else if (i < n - 1 && matrix[i+1][j] != "X") {
+                        int nextValue = (isNumber(matrix[i+1][j])) ? stoi(matrix[i+1][j]) : 0;
+                        newValue = max(dp[i-1][j] - value, dp[i-1][j] + nextValue);
+                    } else {
+                        newValue = dp[i-1][j] - value;
+                    }
                 } else {
                     newValue = dp[i-1][j] + value;
                 }
@@ -51,12 +56,17 @@ int dynamicProgrammingPath(vector<vector<string>>& matrix) {
 
             if (j > 0 && matrix[i][j-1] != "X") {
                 int value = (isNumber(matrix[i][j])) ? stoi(matrix[i][j]) : 0;
-                int newValue;
+                int newValue = dp[i][j-1];
 
-                if (matrix[i][j-1] == "!" && matrix[i][j] == "!") {
-                    newValue = dp[i][j-1]; // two successive rubber cells, don't decrease gold
-                } else if (matrix[i][j-1] == "!") {
-                    newValue = dp[i][j-1] - value; // previous cell was a rubber cell
+                if (matrix[i][j-1] == "!") {
+                    if (matrix[i][j] == "!") {
+                        newValue = dp[i][j-1]; // two successive rubber cells, don't decrease gold
+                    } else if (j < n - 1 && matrix[i][j+1] != "X") {
+                        int nextValue = (isNumber(matrix[i][j+1])) ? stoi(matrix[i][j+1]) : 0;
+                        newValue = max(dp[i][j-1] - value, dp[i][j-1] + nextValue);
+                    } else {
+                        newValue = dp[i][j-1] - value;
+                    }
                 } else {
                     newValue = dp[i][j-1] + value;
                 }
@@ -72,7 +82,7 @@ int dynamicProgrammingPath(vector<vector<string>>& matrix) {
     }
 
     if (dp[n-1][n-1] == 0) {
-        cout << "No valid path found or all gold was negated by robbers." << endl;
+        cout << "No valid path found or all gold was negated by rubbers." << endl;
         return 0;
     } else {
         stack<pair<int, int>> pathStack;
@@ -98,13 +108,13 @@ int dynamicProgrammingPath(vector<vector<string>>& matrix) {
 }
 
 int main() {
-    vector<vector<string>> matrix = {
-        {"2", "X", "!", "5" , "0"},
-        {"1", "9", "!", "X" , "3"},
-        {"1", "3", "1", "6" , "2"},
-        {"2", "X", "5", "3" , "X"},
-        {"8", "4", "2", "!" , "1"}
-    };
+   // fifth test case
+     vector<vector<string> > matrix = {
+        {"2", "X", "!", "5", "0"},
+        {"1", "9", "!", "X", "3"},
+        {"1", "!", "!", "6", "2"},
+        {"2", "X", "!", "5", "X"},
+        {"8", "4", "2", "!", "!"}};
 
     cout << "Gold collected by dynamic programming path: " << dynamicProgrammingPath(matrix) << endl;
     return 0;
